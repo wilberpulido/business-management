@@ -1,0 +1,21 @@
+/* @import 'tailwindcss';
+@import './form.css';
+@import '../scss/button.scss'; */
+
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+    /* Tus colores para que funcionen con dark: y light */
+    --color-primary-500: #79899F;
+    --color-turquoise-500: #40E0D0;
+    --color-flamingo-500: #EF4444;
+}
+
+/* Opcional: transición suave para que no sea un golpe el cambio */
+@layer base {
+    *, ::after, ::before {
+        @apply transition-colors duration-300;
+    }
+}
