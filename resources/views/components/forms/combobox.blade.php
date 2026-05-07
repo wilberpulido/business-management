@@ -1,4 +1,4 @@
-{{-- Tailwind safelist: top-full mt-1 bottom-full mb-1 origin-top origin-bottom rotate-180 font-semibold --}}
+{{-- Tailwind safelist: origin-top origin-bottom rotate-180 font-semibold --}}
 @props([
     'name',
     'label'       => null,
@@ -79,11 +79,12 @@
         x-transition:leave-start="opacity-100 scale-100"
         x-transition:leave-end="opacity-0 scale-95"
         role="listbox"
-        class="absolute z-50 w-full rounded-lg border border-gray-100 bg-white shadow-lg
+        :style="dropdownStyle"
+        class="fixed z-[9999] rounded-lg border border-gray-100 bg-white shadow-lg
                dark:border-slate-800 dark:bg-slate-900"
         :class="{
-            'top-full mt-1 origin-top':       position === 'below',
-            'bottom-full mb-1 origin-bottom': position === 'above'
+            'origin-top':    position === 'below',
+            'origin-bottom': position === 'above'
         }"
     >
         @if($searchable)

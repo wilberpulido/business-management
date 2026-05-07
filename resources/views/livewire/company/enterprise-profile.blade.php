@@ -55,7 +55,7 @@
             </div>
 
             {{-- Address --}}
-            <div class="pb-6">
+            <div>
                 <h3 class="text-xs font-semibold text-gray-400 dark:text-slate-500 uppercase tracking-widest mb-3 pb-2 border-b border-gray-100 dark:border-slate-800">
                     {{ __('company.profile.address') }}
                 </h3>

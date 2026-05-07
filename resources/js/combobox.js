@@ -9,7 +9,9 @@ export default function combobox({ value = null, searchable = false, placeholder
         placeholder,
         position: 'below',
         listHeight: 240,
+        dropdownStyle: {},
         _observer: null,
+        _scrollHandler: null,
 
         init() {
             this._loadOptions(this.$refs.optionsData?.dataset.options);
@@ -19,10 +21,18 @@ export default function combobox({ value = null, searchable = false, placeholder
                 this.search = '';
             });
             this._observer.observe(this.$refs.optionsData, { attributes: true });
+
+            this._scrollHandler = (e) => {
+                if (!this.open) return;
+                if (this.$refs.listbox?.contains(e.target)) return;
+                this.close();
+            };
+            window.addEventListener('scroll', this._scrollHandler, { passive: true, capture: true });
         },
 
         destroy() {
             this._observer?.disconnect();
+            window.removeEventListener('scroll', this._scrollHandler, { capture: true });
         },
 
         _loadOptions(json) {
@@ -33,15 +43,18 @@ export default function combobox({ value = null, searchable = false, placeholder
         _updateGeometry() {
             const rect = this.$refs.trigger?.getBoundingClientRect();
             if (!rect) return;
-            const overhead = this.searchable ? 52 : 0; // search input area height
+            const overhead = this.searchable ? 52 : 0;
             const spaceBelow = window.innerHeight - rect.bottom - 8;
             const spaceAbove = rect.top - 8;
+            const base = { left: rect.left + 'px', width: rect.width + 'px' };
             if (spaceBelow >= spaceAbove || spaceBelow >= 150) {
                 this.position = 'below';
                 this.listHeight = Math.min(240, Math.max(80, spaceBelow - overhead));
+                this.dropdownStyle = { ...base, top: (rect.bottom + 4) + 'px', bottom: 'auto' };
             } else {
                 this.position = 'above';
                 this.listHeight = Math.min(240, Math.max(80, spaceAbove - overhead));
+                this.dropdownStyle = { ...base, top: 'auto', bottom: (window.innerHeight - rect.top + 4) + 'px' };
             }
         },
 
