@@ -1,5 +1,6 @@
 <?php
 
+use App\Livewire\Pages\App\Company\Profile;
 use Illuminate\Support\Facades\Route;
 
 Route::livewire('/', 'pages::guest.landing')->name('guest.landing');
@@ -9,4 +10,6 @@ Route::livewire('/pricing', 'pages::guest.pricing')->name('guest.pricing');
 Route::middleware('auth')->group(function () {
     Route::livewire('/dashboard', 'pages::app.dashboard')->name('dashboard');
     Route::livewire('/profile', 'pages::app.profile')->name('profile');
+
+    Route::livewire('/app/company', Profile::class)->name('company.profile');
 });

@@ -4,7 +4,7 @@
     'containerClass'=>'',
 ])
 <div
-    {{ $attributes->only('class')->merge(['class' => "relative z-0 $containerClass"]) }}
+    {{ $attributes->only('class')->merge(['class' => $containerClass]) }}
 >
     @if(isset($label))
         <x-forms.label for="{{$name}}">

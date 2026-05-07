@@ -2,9 +2,12 @@
 
 namespace App\Actions\Fortify;
 
+use App\Models\Enterprise;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
 
@@ -31,14 +34,22 @@ class CreateNewUser implements CreatesNewUsers
             'password' => $this->passwordRules(),
         ])->validate();
 
-        $user = User::create([
-            'name' => $input['name'],
-            'email' => $input['email'],
-            'password' => Hash::make($input['password']),
-        ]);
+        return DB::transaction(function () use ($input) {
+            $user = User::create([
+                'name'     => $input['name'],
+                'email'    => $input['email'],
+                'password' => Hash::make($input['password']),
+            ]);
 
-        $user->assignRole('user');
+            $user->assignRole('owner');
 
-        return $user;
+            Enterprise::create([
+                'user_id'    => $user->id,
+                'slug'       => Str::slug($input['name']) . '-' . Str::lower(Str::random(6)),
+                'trade_name' => $input['name'],
+            ]);
+
+            return $user;
+        });
     }
 }

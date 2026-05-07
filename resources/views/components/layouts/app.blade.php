@@ -26,7 +26,7 @@
     <div class="min-h-screen flex flex-col">
         <x-layouts.navigation />
 
-        <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 pt-24">
+        <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-12">
             @if (session('success'))
                 <x-ui.alert type="success" class="mb-6">{{ session('success') }}</x-ui.alert>
             @endif
@@ -38,6 +38,8 @@
             @endif
             {{ $slot }}
         </main>
+
+        <x-layouts.footer />
     </div>
     @livewireScripts
 </body>

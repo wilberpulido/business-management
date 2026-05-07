@@ -1,11 +1,21 @@
 <?php
 
+use App\Models\Enterprise;
 use Livewire\Component;
-
 use Spatie\Activitylog\Models\Activity;
 
 new class extends Component
 {
+    public function getEnterprise(): ?Enterprise
+    {
+        return auth()->user()->enterprise;
+    }
+
+    public function getBranchCount(): int
+    {
+        return auth()->user()->enterprise?->branches()->count() ?? 0;
+    }
+
     public function getActivities()
     {
         return Activity::causedBy(auth()->user())
@@ -20,15 +30,65 @@ new class extends Component
 
     {{-- Header --}}
     <div class="mb-8">
-        <h1 class="text-2xl font-bold text-slate-900 dark:text-white">
-            {{ __('ui.dashboard.welcome', ['name' => auth()->user()->name]) }}
-        </h1>
-        <p class="mt-1 text-sm text-gray-500 dark:text-slate-400">
-            {{ __('ui.dashboard.subtitle') }}
-        </p>
+        <div class="flex justify-between">
+            <div>
+                <h1 class="text-2xl font-bold text-slate-900 dark:text-white">
+                    {{ __('ui.dashboard.welcome', ['name' => auth()->user()->name]) }}
+                </h1>
+                <p class="mt-1 text-sm text-gray-500 dark:text-slate-400">
+                    {{ __('ui.dashboard.subtitle') }}
+                </p>
+            </div>
+            <div class="mt-4">
+                <x-ui.button variant="primary" :href="route('company.profile')" wire:navigate>
+                    {{ __('ui.dashboard.setup.company_profile_link') }}
+                </x-ui.button>
+            </div>
+        </div>
     </div>
 
+    {{-- Setup CTAs --}}
+    @if (! $this->getEnterprise())
+        <div class="mb-8 rounded-xl border-2 border-dashed border-indigo-200 dark:border-indigo-800 bg-indigo-50/40 dark:bg-indigo-950/30 p-8 text-center">
+            <div class="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-indigo-100 dark:bg-indigo-900">
+                <svg class="h-6 w-6 text-indigo-600 dark:text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 21v-7.5a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 .75.75V21m-4.5 0H2.36m11.14 0H18m0 0h3.64m-1.39 0V9.349M3.75 21V9.349m0 0a3.001 3.001 0 0 0 3.75-.615A2.993 2.993 0 0 0 9.75 9.75c.896 0 1.7-.393 2.25-1.016a2.993 2.993 0 0 0 2.25 1.016c.896 0 1.7-.393 2.25-1.015a3.001 3.001 0 0 0 3.75.614m-16.5 0a3.004 3.004 0 0 1-.621-4.72l1.189-1.19A1.5 1.5 0 0 1 5.378 3h13.243a1.5 1.5 0 0 1 1.06.44l1.19 1.189a3 3 0 0 1-.621 4.72M6.75 18h3.75a.75.75 0 0 0 .75-.75V13.5a.75.75 0 0 0-.75-.75H6.75a.75.75 0 0 0-.75.75v3.75c0 .414.336.75.75.75Z" />
+                </svg>
+            </div>
+            <h3 class="text-base font-semibold text-slate-900 dark:text-white">
+                {{ __('ui.dashboard.setup.company_title') }}
+            </h3>
+            <p class="mt-1 text-sm text-gray-500 dark:text-slate-400 max-w-sm mx-auto">
+                {{ __('ui.dashboard.setup.company_description') }}
+            </p>
+            <div class="mt-4">
+                <x-ui.button :href="route('company.profile')" wire:navigate>
+                    {{ __('ui.dashboard.setup.company_button') }}
+                </x-ui.button>
+            </div>
+        </div>
+    @elseif ($this->getBranchCount() === 0)
+        <div class="mb-8 rounded-xl border-2 border-dashed border-amber-200 dark:border-amber-800 bg-amber-50/40 dark:bg-amber-950/30 p-8 text-center">
+            <div class="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-amber-100 dark:bg-amber-900">
+                <svg class="h-6 w-6 text-amber-600 dark:text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
+                </svg>
+            </div>
+            <h3 class="text-base font-semibold text-slate-900 dark:text-white">
+                {{ __('ui.dashboard.setup.branch_title') }}
+            </h3>
+            <p class="mt-1 text-sm text-gray-500 dark:text-slate-400 max-w-sm mx-auto">
+                {{ __('ui.dashboard.setup.branch_description') }}
+            </p>
+            <p class="mt-3 text-xs text-gray-400 dark:text-slate-500">
+                {{ __('ui.dashboard.setup.coming_soon') }}
+            </p>
+        </div>
+    @endif
+
     {{-- Stats --}}
+    {{--
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
         @foreach ([
             ['label' => __('ui.dashboard.stats.users'),   'value' => '—', 'icon' => 'M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0'],
@@ -49,8 +109,9 @@ new class extends Component
             </div>
         @endforeach
     </div>
-
+    --}}
     {{-- Recent Activity --}}
+    {{--
     <x-ui.card>
         <x-slot:header>
             <h2 class="text-base font-semibold text-slate-900 dark:text-white">
@@ -94,5 +155,5 @@ new class extends Component
             </ul>
         @endif
     </x-ui.card>
-
+    --}}
 </x-layouts.app>

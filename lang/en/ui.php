@@ -36,6 +36,16 @@ return [
     'dashboard' => [
         'no_activity' => 'No recent activity to show.',
         'recent_activity' => 'Recent Activity',
+        'setup' => [
+            'branch_button' => 'Create branch',
+            'branch_description' => 'Add at least one branch to start managing inventory and sales.',
+            'branch_title' => 'Create your first branch',
+            'coming_soon' => 'Available in the next step.',
+            'company_button' => 'Set up company',
+            'company_description' => 'Complete your company profile to start using the system.',
+            'company_profile_link' => 'Edit company profile',
+            'company_title' => 'Set up your company',
+        ],
         'stats' => [
             'growth' => 'Growth',
             'orders' => 'Orders',
@@ -66,6 +76,7 @@ return [
         'home' => 'Home',
         'pricing' => 'Pricing',
     ],
+    'no_results' => 'No results found.',
     'profile' => [
         'change_password' => 'Change Password',
         'change_password_description' => 'Use a long, random password to stay secure.',
@@ -75,6 +86,7 @@ return [
         'update_info' => 'Profile Information',
         'update_info_description' => 'Update your account\'s name and email address.',
     ],
+    'search' => 'Search...',
     'theme' => [
         'dark' => 'Dark',
         'light' => 'Light',

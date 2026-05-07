@@ -36,6 +36,16 @@ return [
     'dashboard' => [
         'no_activity' => 'No hay actividad reciente para mostrar.',
         'recent_activity' => 'Actividad Reciente',
+        'setup' => [
+            'branch_button' => 'Crear sucursal',
+            'branch_description' => 'Agrega al menos una sucursal para comenzar a gestionar inventario y ventas.',
+            'branch_title' => 'Crea tu primera sucursal',
+            'coming_soon' => 'Disponible en el siguiente paso.',
+            'company_button' => 'Configurar empresa',
+            'company_description' => 'Completa el perfil de tu empresa para comenzar a usar el sistema.',
+            'company_profile_link' => 'Editar perfil de empresa',
+            'company_title' => 'Configura tu empresa',
+        ],
         'stats' => [
             'growth' => 'Crecimiento',
             'orders' => 'Pedidos',
@@ -66,6 +76,7 @@ return [
         'home' => 'Inicio',
         'pricing' => 'Precios',
     ],
+    'no_results' => 'Sin resultados.',
     'profile' => [
         'change_password' => 'Cambiar Contraseña',
         'change_password_description' => 'Usa una contraseña larga y aleatoria para mayor seguridad.',
@@ -75,6 +86,7 @@ return [
         'update_info' => 'Información del Perfil',
         'update_info_description' => 'Actualiza el nombre y email de tu cuenta.',
     ],
+    'search' => 'Buscar...',
     'theme' => [
         'dark' => 'Oscuro',
         'light' => 'Claro',
